@@ -17,6 +17,7 @@ active bit default 1
 create table type_video(
 id int primary key identity,
 name nvarchar(90) not null,
+isAtive bit default 1
 )
 
 create table video(
