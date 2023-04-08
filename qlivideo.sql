@@ -74,7 +74,3 @@ select * from Video v where v.id in
 			 group by id_video 
 			 order by count(distinct id_user) desc)
 
-Alter table type_video add  isActive bit;
-
-select * from type_video
-update type_video set isActive = 1
