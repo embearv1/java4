@@ -19,7 +19,8 @@ import com.poly.repository.VideoRepository;
  * Servlet implementation class AdminController
  */
 @WebServlet(urlPatterns = {"/admin/home","/admin/logout","/admin/manage-video",
-		"/admin/update-video","/admin/view-add-video","/admin/delete-video","/admin/add-video","/admin/view-video"})
+		"/admin/update-video","/admin/view-add-video","/admin/delete-video",
+		"/admin/add-video","/admin/view-video","/admin/type"})
 public class AdminController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private VideoRepository vr = new VideoRepository();
@@ -53,6 +54,9 @@ public class AdminController extends HttpServlet {
 		}
 		else if(uri.contains("view-video")){
 			response.sendRedirect("/Assignment/all-video");
+		}
+		else if(uri.contains("type")){
+			this.viewType(request, response);
 		}
 		else {
 			request.setAttribute("link","/views/admin/admin-trangnen.jsp");
@@ -92,4 +96,10 @@ public class AdminController extends HttpServlet {
 		request.setAttribute("link","/views/admin/film-add.jsp");
 		request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
 	}
+	private void viewType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("all_type", tr.getAll());
+		request.setAttribute("link","/views/admin/admin-type.jsp");
+		request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
+	}
+	
 }

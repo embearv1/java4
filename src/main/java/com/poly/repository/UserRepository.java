@@ -11,7 +11,7 @@ import com.poly.entity.User;
 public class UserRepository {
 	public User checkLogin(String username, String pass) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
-			Query query = session.createQuery("From User where user=:x and pass=:y");
+			Query query = session.createQuery("From User where user=:x and pass=:y and active=true");
 			query.setParameter("x", username);
 			query.setParameter("y", pass);
 			User u = (User)query.getSingleResult();

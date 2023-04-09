@@ -140,7 +140,7 @@
 								class="mdi mdi-table"></i><span class="hide-menu">Manager
 									Video</span></a></li>
 						<li><a class="waves-effect waves-dark"
-							href="#" aria-expanded="false"><i
+							href="<c:url value='/admin/type'/>" aria-expanded="false"><i
 								class="mdi mdi-table"></i><span class="hide-menu">Manager
 									Type Video</span></a></li>
 						<li><a class="waves-effect waves-dark"

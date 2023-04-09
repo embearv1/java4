@@ -43,6 +43,14 @@ public class Type_Video implements Serializable{
 		this.listVideo = listVideo;
 	}
 
+	
+
+	public Type_Video(String name, boolean isactive) {
+		super();
+		this.name = name;
+		this.isactive = isactive;
+	}
+
 
 
 	public Type_Video(int id, String name, boolean isactive, List<Video> listVideo) {

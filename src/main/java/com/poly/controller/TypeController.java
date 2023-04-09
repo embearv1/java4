@@ -7,13 +7,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.poly.entity.Type_Video;
+import com.poly.repository.Type_Repo;
+
 /**
  * Servlet implementation class TypeController
  */
-@WebServlet("/TypeController")
+@WebServlet(urlPatterns = {"/TypeController","/type/add-type","/type/view-edit-type","/type/edit-type","/type/delete-type"})
 public class TypeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    private Type_Repo tr = new Type_Repo();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -27,7 +30,18 @@ public class TypeController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String uri = request.getRequestURI();
+		if(uri.contains("TypeController")) {
+			request.setAttribute("link","/views/admin/admin-type.jsp");
+			request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
+		}
+		if(uri.contains("delete-type")) {
+			this.deleteType(request, response);
+		}
+		if(uri.contains("view-edit-type")) {
+			this.detailType(request, response);
+		}
+		
 	}
 
 	/**
@@ -35,7 +49,41 @@ public class TypeController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String uri = request.getRequestURI();
+		if(uri.contains("add-type")) {
+			this.addType(request, response);
+		}
+		if(uri.contains("edit-type")) {
+			this.updateType(request, response);
+		}
+	}
+	private void addType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("name");
+		boolean active = true;
+		Type_Video type = new Type_Video(name, active);
+		tr.add(type);
+		response.sendRedirect("/Assignment/admin/type");
+	}
+	
+	private void deleteType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		this.tr.dele(Integer.parseInt(id));
+		response.sendRedirect("/Assignment/admin/type");
+	}
+	
+	private void detailType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		Type_Video type = tr.getOne(Integer.parseInt(id));
+		request.setAttribute("type",type);
+		request.setAttribute("all_type", tr.getAll());
+		request.setAttribute("link","/views/admin/admin-type.jsp");
+		request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
 	}
 
+	private void updateType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		tr.update(Integer.parseInt(id), name);
+		response.sendRedirect("/Assignment/admin/type");
+	}
 }
