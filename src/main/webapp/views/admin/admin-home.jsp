@@ -132,7 +132,7 @@
 							aria-expanded="false"><i class="mdi mdi-gauge"></i><span
 								class="hide-menu">Home</span></a></li>
 						<li><a class="waves-effect waves-dark"
-							href="#" aria-expanded="false"><i
+							href="<c:url value='/admin/account'/>" aria-expanded="false"><i
 								class="mdi mdi-account-check"></i><span class="hide-menu">Manager
 									User</span></a></li>
 						<li><a class="waves-effect waves-dark"

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.poly.entity.Video;
 import com.poly.repository.Type_Repo;
+import com.poly.repository.UserRepository;
 import com.poly.repository.VideoRepository;
 
 /**
@@ -20,11 +21,12 @@ import com.poly.repository.VideoRepository;
  */
 @WebServlet(urlPatterns = {"/admin/home","/admin/logout","/admin/manage-video",
 		"/admin/update-video","/admin/view-add-video","/admin/delete-video",
-		"/admin/add-video","/admin/view-video","/admin/type"})
+		"/admin/add-video","/admin/view-video","/admin/type","/admin/account"})
 public class AdminController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private VideoRepository vr = new VideoRepository();
     private Type_Repo tr = new Type_Repo();
+    private UserRepository ur = new UserRepository();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -41,6 +43,8 @@ public class AdminController extends HttpServlet {
 		HttpSession session = request.getSession();
 		String uri = request.getRequestURI();
 		if(uri.contains("home")) {
+			request.setAttribute("videoView", vr.getMostView());
+			request.setAttribute("videoShare", vr.getMostShare());
 			request.setAttribute("link","/views/admin/admin-trangnen.jsp");
 			request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
 		}else if(uri.contains("logout")) {
@@ -57,6 +61,9 @@ public class AdminController extends HttpServlet {
 		}
 		else if(uri.contains("type")){
 			this.viewType(request, response);
+		}
+		else if(uri.contains("account")){
+			this.viewAccount(request, response);
 		}
 		else {
 			request.setAttribute("link","/views/admin/admin-trangnen.jsp");
@@ -99,6 +106,11 @@ public class AdminController extends HttpServlet {
 	private void viewType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("all_type", tr.getAll());
 		request.setAttribute("link","/views/admin/admin-type.jsp");
+		request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
+	}
+	private void viewAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("all_acc",ur.getAll());
+		request.setAttribute("link","/views/admin/mange-account.jsp");
 		request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
 	}
 	

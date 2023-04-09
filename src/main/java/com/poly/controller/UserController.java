@@ -162,7 +162,7 @@ public class UserController extends HttpServlet {
 		String emailTo = request.getParameter("email");
 		User u = ur.checkForget(user, emailTo);
 		if(u!=null) {
-			ur.updatePass(user);
+			ur.resetPass(user);;
 			Au_mail.adminMail(request, response,emailTo,"Your New Password","123@");
 			response.sendRedirect("login");
 		}else {

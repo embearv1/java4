@@ -163,4 +163,18 @@ public class VideoRepository {
 		}
 	}
 	
+	public List<Video> getMostShare(){
+		List<Video> ds = new ArrayList<>();
+		try (Session session = HibernateConfig.getFACTORY().openSession()){
+			Query query = session.createQuery("From Video where active=:id Order By share desc");
+			query.setParameter("id", true);
+			query.setMaxResults(4);
+			ds = query.getResultList();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return ds;
+	}
+	
 }

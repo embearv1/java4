@@ -71,6 +71,19 @@ public class User implements Serializable {
 		this.listHis = listHis;
 	}
 
+	
+	
+
+	public User(String user, String pass, String name, String email, boolean admin, boolean active) {
+		super();
+		this.user = user;
+		this.pass = pass;
+		this.name = name;
+		this.email = email;
+		this.admin = admin;
+		this.active = active;
+	}
+
 	public int getId() {
 		return id;
 	}
