@@ -24,7 +24,7 @@ create table video(
 id int primary key identity,
 title nvarchar(225),
 id_type int foreign key references type_video(id),
-href varchar(50),
+href varchar(150),
 poster varchar(90) null,
 [views] int not null default 0,
 shares int not null default 0,

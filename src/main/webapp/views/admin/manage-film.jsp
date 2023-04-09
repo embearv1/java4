@@ -7,37 +7,30 @@
 			Film</a>
 	</div>
 	<div class="row border border-primary">
-		<form action="" method="post">
+		<form action="/Assignment/admin/update-video" method="post" enctype="multipart/form-data">
 			<div class="mt-2 text-center">Or Update Film</div>
 			<div class="form-outline mb-4 mt-2">
 				<input type="text" id="form4Example1" class="form-control"
-					name="title" /> <label class="form-label" for="form4Example1">Tiltle</label>
+					name="title"  value="${v.title}"/> <label class="form-label" for="form4Example1">Tiltle</label>
 			</div>
 			<div class="form-outline mb-4">
-				<select name="type_video">
+				<select name="type">
 					<c:forEach items="${all_type}" var="c">
-						<option value="${c.id}">${c.name}</option>
+						<option value="${c.id}" ${v.type.id==c.id?'selected':''}>${c.name}</option>
 					</c:forEach>
 				</select>
 			</div>
 			<div class="form-outline mb-4 mt-2">
-				<input type="text" id="form4Example1" class="form-control" /> <label
+				<input type="text"  id="form4Example1" class="form-control" name="href"  value="${v.href}"/> <label
 					class="form-label" for="form4Example1">Href</label>
 			</div>
 			<div class="form-outline mb-4 mt-2">
-				<input type="text" id="form4Example1" class="form-control" /> <label
-					class="form-label" for="form4Example1">Poster</label>
-			</div>
-			<div class="form-outline mb-3 ">
-
-				<select name="active">
-					<option value="true">Active</option>
-					<option value="false">Non-Active</option>
-				</select> <br> <label>Video Status</label>
+				<input type="file" name="poster"  class="form-control" value="${v.poster}" /> <label
+			class="form-label" for="form4Example1">Poster</label>
 			</div>
 			<!-- Message input -->
 			<div class="form-outline mb-4">
-				<textarea class="form-control" id="form4Example3" rows="4"></textarea>
+				<textarea class="form-control" id="form4Example3" rows="4"  name="descrip">${v.descrip}</textarea>
 				<label class="form-label" for="form4Example3">Description</label>
 			</div>
 
@@ -75,10 +68,10 @@
 						<td>${x.share}</td>
 						<td>${x.descrip}</td>
 						<td>${x.active}</td>
-						<td><a href="#editEmployeeModal" class="edit"
+						<td><a href="<c:url value='/admin/view-update-video'/>?id=${x.id}" class="edit"
 							data-toggle="modal"><i class="fa fa-pencil"
 								aria-hidden="true">Edit</i></a> <br> <a
-							href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i
+							href="<c:url value='/admin/delete-video'/>?id=${x.id}" class="delete" data-toggle="modal"><i
 								class="fa fa-trash-o" aria-hidden="true"></i>Dele</a></td>
 					</tr>
 				</c:forEach>

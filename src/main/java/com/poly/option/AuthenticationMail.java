@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthenticationMail {
 	public void adminMail(HttpServletRequest req ,HttpServletResponse res,String mail,String title,String about) {
 		final String userMail = "nguyenvanem05@gmail.com";
-		final String pass="ejncqaqxomnuepnb";
+		final String pass="yourpass";
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com");
 		prop.put("mail.smtp.port", "587");

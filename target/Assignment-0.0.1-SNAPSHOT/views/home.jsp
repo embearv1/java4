@@ -112,7 +112,7 @@
                 <c:forEach items="${_ds}" var="c">
                 	<div
                     class="product__sidebar__view__item set-bg mix day years"
-                    data-setbg="<c:url value='${c.poster}'/>"
+                    data-setbg="<c:url value='${x.poster}'/>"
                   >
                     <div class="view"><i class="fa fa-eye"></i> ${c.view}</div>
                     <h5><a href="#">${c.title}</a></h5>

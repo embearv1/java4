@@ -10,10 +10,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.poly.config.HibernateConfig;
+import com.poly.dao.VideoDAO;
 import com.poly.entity.History;
 import com.poly.entity.Video;
 
-public class VideoRepository {
+public class VideoRepository implements VideoDAO {
+	@Override
 	public List<Video> getAll(){
 		List<Video> ds = new ArrayList<>();
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -27,6 +29,7 @@ public class VideoRepository {
 		return ds;
 	}
 	
+	@Override
 	public List<Video> getPaging(int index) {
 		List<Video> ds = new ArrayList<>();
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -44,6 +47,7 @@ public class VideoRepository {
 		return ds;
 	}
 	
+	@Override
 	public Video getOne(int id) {
 		Video vd = null;
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -56,6 +60,7 @@ public class VideoRepository {
 		}
 		return vd;
 	}
+	@Override
 	public void setView(int id,int view) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
 			Transaction tran = session.beginTransaction();
@@ -82,6 +87,7 @@ public class VideoRepository {
 //		}
 //	}
 	
+	@Override
 	public List<Video> getMostView() {
 		List<Video> ds= new ArrayList<>();
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -96,6 +102,7 @@ public class VideoRepository {
 		}
 		return ds;
 	}
+	@Override
 	public List<Video> getMostLike() {
 		List<Video> ds= new ArrayList<>();
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -120,6 +127,7 @@ public class VideoRepository {
 		return ds;
 	}
 	
+	@Override
 	public List<Video> getNewVideo() {
 		List<Video> ds= new ArrayList<>();
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -136,6 +144,7 @@ public class VideoRepository {
 	}
 	
 	
+	@Override
 	public Video getVideoByUrl(String href) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()) {
 			Query query =session.createQuery("From Video where href=:href");
@@ -149,6 +158,7 @@ public class VideoRepository {
 		return null;
 	}
 	
+	@Override
 	public void setShare(int view,int share,int id) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()) {
 			Transaction tran = session.beginTransaction();
@@ -163,6 +173,7 @@ public class VideoRepository {
 		}
 	}
 	
+	@Override
 	public List<Video> getMostShare(){
 		List<Video> ds = new ArrayList<>();
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -175,6 +186,43 @@ public class VideoRepository {
 			e.printStackTrace();
 		}
 		return ds;
+	}
+	
+	@Override
+	public void deleteVideo(int id) {
+		
+		try (Session session = HibernateConfig.getFACTORY().openSession()){
+			Transaction tran = session.beginTransaction();
+			Query query = session.createQuery("Update Video set active=false where id=:id");
+			query.setParameter("id", id);
+			query.executeUpdate();
+			tran.commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void addVideo(Video v) {
+		try (Session session = HibernateConfig.getFACTORY().openSession()){
+			Transaction tran = session.beginTransaction();
+			session.save(v);
+			tran.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void updateVideo(Video v) {
+		try (Session session = HibernateConfig.getFACTORY().openSession()){
+			Transaction tran = session.beginTransaction();
+			session.merge(v);
+			tran.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

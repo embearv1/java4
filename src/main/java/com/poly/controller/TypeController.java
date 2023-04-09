@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.poly.entity.Type_Video;
+import com.poly.dao.TypeDAO;
 import com.poly.repository.Type_Repo;
 
 /**
@@ -16,7 +17,7 @@ import com.poly.repository.Type_Repo;
 @WebServlet(urlPatterns = {"/TypeController","/type/add-type","/type/view-edit-type","/type/edit-type","/type/delete-type"})
 public class TypeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private Type_Repo tr = new Type_Repo();
+    private TypeDAO tr = new Type_Repo();
     /**
      * @see HttpServlet#HttpServlet()
      */

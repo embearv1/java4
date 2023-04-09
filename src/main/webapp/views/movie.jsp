@@ -30,7 +30,7 @@
 				<c:forEach items="${video}" var="x">
 					<div class="col-lg-3 col-md-6 col-sm-6">
 						<div class="product__item">
-							<div class="product__item__pic set-bg" data-setbg="${x.poster}">
+							<div class="product__item__pic set-bg" data-setbg="<c:url value='${x.poster}'/>">
 								<div class="comment">
 									<i class="fa fa-comments"></i> 11
 								</div>

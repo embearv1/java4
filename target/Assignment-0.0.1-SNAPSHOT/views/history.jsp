@@ -17,7 +17,7 @@
 					<div class="col-lg-4 col-md-6 col-sm-6">
 						<div class="product__item">
 							<div class="product__item__pic set-bg"
-								data-setbg="${x.video.poster}">
+								data-setbg="<c:url value='${x.video.poster}'/>">
 								<div class="view">
 									<i class="fa fa-eye"></i>${x.video.view}</div>
 							</div>

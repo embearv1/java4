@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.poly.constant.SessionAtri;
 import com.poly.entity.User;
 import com.poly.option.AuthenticationMail;
+import com.poly.dao.UserDAO;
 import com.poly.repository.UserRepository;
 
 /**
@@ -23,7 +24,7 @@ import com.poly.repository.UserRepository;
 		"/my-profile" ,"/change-pass"})
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	UserRepository ur = new UserRepository();
+	UserDAO ur = new UserRepository();
 	AuthenticationMail Au_mail = new AuthenticationMail();
 	/**
 	 * @see HttpServlet#HttpServlet()

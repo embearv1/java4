@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.poly.entity.User;
+import com.poly.dao.UserDAO;
 import com.poly.repository.UserRepository;
 
 /**
@@ -16,7 +17,7 @@ import com.poly.repository.UserRepository;
 @WebServlet(urlPatterns = {"/AccountController","/account/add-acc","/account/delete-acc","/account/detail-acc","/account/update-acc"})
 public class AccountController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private UserRepository ur = new UserRepository();
+    private UserDAO ur = new UserRepository();
     private int idt;
     /**
      * @see HttpServlet#HttpServlet()

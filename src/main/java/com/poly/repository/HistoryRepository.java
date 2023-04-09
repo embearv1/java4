@@ -11,11 +11,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.poly.config.HibernateConfig;
+import com.poly.dao.HistoryDAO;
 import com.poly.entity.History;
 import com.poly.entity.Video;
 
-public class HistoryRepository {
+public class HistoryRepository implements HistoryDAO {
 	
+	@Override
 	public History checkHis(int userId, int videoId ) {
 		History his = null;
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -30,6 +32,7 @@ public class HistoryRepository {
 		return his;
 	}
 	
+	@Override
 	public void updateDisLikeHistory(int userId, int videoId ) {
 		Date date = new Date(Calendar.getInstance().getTime().getTime());
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -46,6 +49,7 @@ public class HistoryRepository {
 		}
 	}
 	
+	@Override
 	public void setHistory(History his) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
 			Transaction tran = session.beginTransaction();
@@ -57,6 +61,7 @@ public class HistoryRepository {
 		}
 	}
 	
+	@Override
 	public boolean likeVideo(int userId, int videoId,boolean like, Date ng) {
 		
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -76,6 +81,7 @@ public class HistoryRepository {
 		}
 		return false;
 	}
+	@Override
 	public List<History> getHistoryByUser(int userId){
 		List<History> ds = new ArrayList<>();
 		try(Session session = HibernateConfig.getFACTORY().openSession()){
@@ -85,10 +91,11 @@ public class HistoryRepository {
 		}
 		return ds;
 	}
+	@Override
 	public List<Video> getLikedByUser(int userId){
 		List<Video> videos = new ArrayList<>();
 	    try (Session session = HibernateConfig.getFACTORY().openSession()) {
-	        Query query = session.createQuery("SELECT DISTINCT history.video FROM History history WHERE history.user.id = :userId AND history.islike = true ORDER BY history.video.title DESC");
+	        Query query = session.createQuery("SELECT DISTINCT history.video FROM History history WHERE history.user.id = :userId AND history.islike = true AND history.video.active=true ORDER BY history.video.title DESC");
 	        query.setParameter("userId", userId);
 	        videos = query.getResultList();
 	    }

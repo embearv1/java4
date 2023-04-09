@@ -44,7 +44,7 @@
 									required="required"> <span class="icon_profile"></span>
 							</div>
 							<div class="input__item">
-								<input type="email" placeholder="Enter Your Email"
+								<input type="email" name="email" placeholder="Enter Your Email"
 									required="required"> <span class="icon_mail"></span>
 							</div>
 							<button type="submit" class="site-btn">Send</button>

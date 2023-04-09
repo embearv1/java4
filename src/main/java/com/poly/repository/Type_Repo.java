@@ -9,9 +9,11 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.poly.config.HibernateConfig;
+import com.poly.dao.TypeDAO;
 import com.poly.entity.Type_Video;
 
-public class Type_Repo {
+public class Type_Repo implements TypeDAO {
+	@Override
 	public List<Type_Video> getAll() {
 		List<Type_Video> ds = new ArrayList<>();
 		try (Session session = HibernateConfig.getFACTORY().openSession()) {
@@ -24,6 +26,7 @@ public class Type_Repo {
 		return ds;
 	}
 
+	@Override
 	public void add(Type_Video type) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()) {
 			Transaction tran = session.beginTransaction();
@@ -35,6 +38,7 @@ public class Type_Repo {
 		}
 	}
 
+	@Override
 	public void dele(int id) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()) {
 			Transaction tran = session.beginTransaction();
@@ -48,6 +52,7 @@ public class Type_Repo {
 		}
 	}
 
+	@Override
 	public void update(int id,String name) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()) {
 			Transaction tran = session.beginTransaction();
@@ -62,6 +67,7 @@ public class Type_Repo {
 		}
 	}
 
+	@Override
 	public Type_Video getOne(int id) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()) {
 			Query query = session.createQuery("From Type_Video where id=:id");

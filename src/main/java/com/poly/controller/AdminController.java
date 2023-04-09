@@ -1,32 +1,45 @@
 package com.poly.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
+import org.apache.commons.beanutils.BeanUtils;
+
+import com.poly.entity.Type_Video;
 import com.poly.entity.Video;
+import com.poly.dao.TypeDAO;
 import com.poly.repository.Type_Repo;
+import com.poly.dao.UserDAO;
 import com.poly.repository.UserRepository;
+import com.poly.dao.VideoDAO;
 import com.poly.repository.VideoRepository;
+
 
 /**
  * Servlet implementation class AdminController
  */
+@MultipartConfig
 @WebServlet(urlPatterns = {"/admin/home","/admin/logout","/admin/manage-video",
 		"/admin/update-video","/admin/view-add-video","/admin/delete-video",
-		"/admin/add-video","/admin/view-video","/admin/type","/admin/account"})
+		"/admin/add-video","/admin/view-video","/admin/type","/admin/account","/admin/view-update-video"})
 public class AdminController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private VideoRepository vr = new VideoRepository();
-    private Type_Repo tr = new Type_Repo();
-    private UserRepository ur = new UserRepository();
+    private VideoDAO vr = new VideoRepository();
+    private TypeDAO tr = new Type_Repo();
+    private UserDAO ur = new UserRepository();
+    private int idvd;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -59,8 +72,13 @@ public class AdminController extends HttpServlet {
 		else if(uri.contains("view-video")){
 			response.sendRedirect("/Assignment/all-video");
 		}
+		else if(uri.contains("delete-video")){
+			this.deleteVideo(request, response);
+		}
 		else if(uri.contains("type")){
 			this.viewType(request, response);
+		}else if(uri.contains("view-update-video")){
+			this.viewDetail(request, response);
 		}
 		else if(uri.contains("account")){
 			this.viewAccount(request, response);
@@ -76,7 +94,13 @@ public class AdminController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String uri = request.getRequestURI();
+		if(uri.contains("add-video")) {
+			this.addfilm(request, response);
+		}
+		if(uri.contains("update-video")) {
+			this.updateVideo(request, response);
+		}
 	}
 	private void viewAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Video> ds = vr.getAll();
@@ -114,4 +138,89 @@ public class AdminController extends HttpServlet {
 		request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
 	}
 	
+	private void deleteVideo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		vr.deleteVideo(Integer.parseInt(id));
+		this.viewAll(request, response);
+	}
+	
+	private void addfilm (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Video vd = new Video();
+		String fileNameRandom = "default.png";
+		Part part = request.getPart("poster");
+		String fileName = part.getSubmittedFileName();
+		fileNameRandom = UUID.randomUUID() + ".png";
+
+		String uploadFile = "/upload/" + fileNameRandom;
+
+		String uploadDirectory = getServletContext().getRealPath("/upload");
+		File uploadDir = new File(uploadDirectory);
+		if (!uploadDir.exists()) { // Kiểm tra nếu thư mục upload chưa tồn tại thì tạo nó
+		    uploadDir.mkdir();
+		}
+		String filePath = uploadDirectory + File.separator + fileNameRandom; // Đường dẫn tuyệt đối đến tệp được tải lên
+		part.write(filePath);
+		vd.setPoster(uploadFile);
+		String type_id =request.getParameter("type");
+		Type_Video type = tr.getOne(Integer.parseInt(type_id));
+		vd.setType(type);
+		vd.setActive(true);
+		vd.setListhis(null);
+		vd.setHref(request.getParameter("href"));
+		vd.setDescrip(request.getParameter("descrip"));
+		try {
+			BeanUtils.populate(vd,request.getParameterMap());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		vr.addVideo(vd);
+		this.viewAll(request, response);
+	}
+	
+	private void viewDetail (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id= request.getParameter("id");
+		Video vd= vr.getOne(Integer.parseInt(id));
+		idvd =Integer.parseInt(id);
+		request.setAttribute("v",vd);
+		this.viewAll(request, response);
+	}
+	private void updateVideo (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		Video vd = new Video();
+		String fileNameRandom = "default.png";
+		Part part = request.getPart("poster");
+		String fileName = part.getSubmittedFileName();
+		fileNameRandom = UUID.randomUUID() + ".png";
+
+		String uploadFile = "/upload/" + fileNameRandom;
+		
+		String uploadDirectory = getServletContext().getRealPath("/upload");
+		File uploadDir = new File(uploadDirectory);
+		if (!uploadDir.exists()) { // Kiểm tra nếu thư mục upload chưa tồn tại thì tạo nó
+		    uploadDir.mkdir();
+		}
+		String filePath = uploadDirectory + File.separator + fileNameRandom; // Đường dẫn tuyệt đối đến tệp được tải lên
+		part.write(filePath);
+		vd.setPoster(uploadFile);
+		vd.setId(idvd);
+		String type_id =request.getParameter("type");
+		Type_Video type = tr.getOne(Integer.parseInt(type_id));
+		vd.setType(type);
+		vd.setActive(true);
+		vd.setListhis(null);
+		vd.setHref(request.getParameter("href"));
+		vd.setDescrip(request.getParameter("descrip"));
+		try {
+			BeanUtils.populate(vd,request.getParameterMap());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} 
+		System.out.println(vd.getHref()+" "+vd.getDescrip());
+		vr.updateVideo(vd);
+		this.viewAll(request, response);
+	}
 }

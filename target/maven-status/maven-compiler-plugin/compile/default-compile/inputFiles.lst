@@ -1,9 +1,12 @@
 F:\code-eclipe\Assignment\src\main\java\com\poly\repository\HistoryRepository.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\constant\SessionAtri.java
+F:\code-eclipe\Assignment\src\main\java\com\poly\controller\TypeController.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\filter\Login_Role_Filter.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\controller\VideoController.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\repository\UserRepository.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\repository\VideoRepository.java
+F:\code-eclipe\Assignment\src\main\java\com\poly\filter\ManyLanguege.java
+F:\code-eclipe\Assignment\src\main\java\com\poly\controller\AccountController.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\config\HibernateConfig.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\entity\User.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\repository\Type_Repo.java
@@ -12,5 +15,6 @@ F:\code-eclipe\Assignment\src\main\java\com\poly\controller\UserController.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\entity\Type_Video.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\entity\History.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\option\AuthenticationMail.java
+F:\code-eclipe\Assignment\src\main\java\com\poly\option\UploadImage.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\controller\AdminController.java
 F:\code-eclipe\Assignment\src\main\java\com\poly\filter\UTF8_Filter.java

@@ -20,7 +20,9 @@ import com.poly.entity.History;
 import com.poly.entity.User;
 import com.poly.entity.Video;
 import com.poly.option.AuthenticationMail;
+import com.poly.dao.HistoryDAO;
 import com.poly.repository.HistoryRepository;
+import com.poly.dao.VideoDAO;
 import com.poly.repository.VideoRepository;
 
 /**
@@ -31,8 +33,8 @@ import com.poly.repository.VideoRepository;
 public class VideoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private VideoRepository vr = new VideoRepository();
-	private HistoryRepository hr = new HistoryRepository();
+	private VideoDAO vr = new VideoRepository();
+	private HistoryDAO hr = new HistoryRepository();
 	private AuthenticationMail atm = new AuthenticationMail();
 	private String linkVideo;
 	/**

@@ -9,9 +9,11 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.poly.config.HibernateConfig;
+import com.poly.dao.UserDAO;
 import com.poly.entity.User;
 
-public class UserRepository {
+public class UserRepository implements UserDAO  {
+	@Override
 	public User checkLogin(String username, String pass) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
 			Query query = session.createQuery("From User where user=:x and pass=:y and active=true");
@@ -25,6 +27,7 @@ public class UserRepository {
 		}
 		return null;
 	}
+	@Override
 	public void addUser(User u) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
 			Transaction tran  = session.beginTransaction();
@@ -36,6 +39,7 @@ public class UserRepository {
 		}
 	}
 	
+	@Override
 	public void updatePass(int id,String pass) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
 			Transaction tran  = session.beginTransaction();
@@ -49,6 +53,7 @@ public class UserRepository {
 			e.printStackTrace();
 		}
 	}
+	@Override
 	public User checkForget(String user,String mail) {
 		boolean check = false;
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -63,6 +68,7 @@ public class UserRepository {
 		}
 		return null;
 	}
+	@Override
 	public void resetPass(String user) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
 			Transaction tran= session.beginTransaction();
@@ -73,6 +79,7 @@ public class UserRepository {
 			tran.commit();
 		}
 	}
+	@Override
 	public List<User> getAll(){
 		List<User> ds = new ArrayList<>();
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
@@ -85,6 +92,7 @@ public class UserRepository {
 		return ds;
 	}
 	
+	@Override
 	public void delete(int id) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
 			Transaction tran = session.beginTransaction();
@@ -97,6 +105,7 @@ public class UserRepository {
 			e.printStackTrace();
 		}
 	}
+	@Override
 	public User getOne(int id) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
 			Query query = session.createQuery("From User where id=:id");
@@ -109,6 +118,7 @@ public class UserRepository {
 		}
 		return null;
 	}
+	@Override
 	public void updateUser(User u) {
 		try (Session session = HibernateConfig.getFACTORY().openSession()){
 			Transaction tran = session.beginTransaction();
