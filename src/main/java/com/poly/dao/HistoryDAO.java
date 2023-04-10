@@ -19,5 +19,7 @@ public interface HistoryDAO {
 	List<History> getHistoryByUser(int userId);
 
 	List<Video> getLikedByUser(int userId);
+	
+	void updateShare(int idu,int idvd);
 
 }

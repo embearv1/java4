@@ -101,4 +101,23 @@ public class HistoryRepository implements HistoryDAO {
 	    }
 	    return videos;
 	}
+
+	@Override
+	public void updateShare(int idu, int idvd) {
+//		Date date = new Date(Calendar.getInstance().getTime().getTime());
+//		try (Session session = HibernateConfig.getFACTORY().openSession()){
+//			Transaction tran = session.beginTransaction();
+//			String hql ="Update History set  likeDate=:x where user.id =:userid and video.id =:videoid";
+//			Query query = session.createQuery(hql);
+//			query.setParameter("userid",idu);
+//			query.setParameter("videoid",idvd);
+//			query.setParameter("x", date);
+//			query.executeUpdate();
+//			tran.commit();
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//		}
+		
+	}
 }

@@ -29,7 +29,7 @@ import com.poly.repository.VideoRepository;
  * Servlet implementation class VideoController
  */
 @WebServlet(urlPatterns = { "/home", "/all-video", "/video/detail", "/video/blog", "/video/like", "/video/my-history",
-		"/video/favorite","/video/view-share","/video/share" })
+		"/video/favorite", "/video/view-share", "/video/share" })
 public class VideoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -37,6 +37,8 @@ public class VideoController extends HttpServlet {
 	private HistoryDAO hr = new HistoryRepository();
 	private AuthenticationMail atm = new AuthenticationMail();
 	private String linkVideo;
+	private int idvd;
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -56,9 +58,9 @@ public class VideoController extends HttpServlet {
 		String uri = request.getRequestURI();
 		if (uri.contains("all-video")) {
 			this.hienthi(request, response);
-		} else if (uri.contains("/detail")) {
+		} else if (uri.contains("detail")) {
 			this.detail(session, request, response);
-			
+
 		} else if (uri.contains("blog")) {
 			this.hienthiBlog(request, response);
 		} else if (uri.contains("home")) {
@@ -69,13 +71,12 @@ public class VideoController extends HttpServlet {
 			this.history(session, request, response);
 		} else if (uri.contains("favorite")) {
 			this.myfavorite(session, request, response);
-		}else if (uri.contains("view-share")) {
-			this.viewShareVideo(session,request, response);
-		}
-		else {
+		} else if (uri.contains("view-share")) {
+			this.viewShareVideo(session, request, response);
+		} else {
 			this.homepage(request, response);
 		}
-		
+
 	}
 
 	/**
@@ -87,7 +88,7 @@ public class VideoController extends HttpServlet {
 		// TODO Auto-generated method stub
 		String uri = request.getRequestURI();
 		HttpSession session = request.getSession();
-		if(uri.contains("share")) {
+		if (uri.contains("share")) {
 			this.shareVideo(session, request, response);
 		}
 	}
@@ -122,6 +123,10 @@ public class VideoController extends HttpServlet {
 	private void detail(HttpSession session, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String id = request.getParameter("id");
+		if (id == null) {
+			this.homepage(request, response);
+			return;
+		}
 		Video vd = this.vr.getOne(Integer.parseInt(id));
 		vr.setView(vd.getId(), vd.getView());
 		User u = (User) session.getAttribute(SessionAtri.Current_User);
@@ -150,7 +155,7 @@ public class VideoController extends HttpServlet {
 	private void homepage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		List<Video> ds = vr.getMostView();
-		List<Video> ds_like  = vr.getNewVideo();
+		List<Video> ds_like = vr.getNewVideo();
 		request.setAttribute("_list", ds);
 		request.setAttribute("_ds", ds_like);
 		request.setAttribute("view", "/views/home.jsp");
@@ -176,7 +181,7 @@ public class VideoController extends HttpServlet {
 				hr.setHistory(his1);
 				request.setAttribute("liked", true);
 			}
-			vr.setView(vd.getId(), vd.getView()-2);
+			vr.setView(vd.getId(), vd.getView() - 2);
 //			request.setAttribute("view", "/video/detail?id=" + id);
 			this.detail(session, request, response);
 //			response.sendRedirect("/Assignment/video/detail?id=" + id);
@@ -202,27 +207,31 @@ public class VideoController extends HttpServlet {
 		request.setAttribute("view", "/views/myfavarite.jsp");
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
 	}
-	private void viewShareVideo(HttpSession session,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		User u = (User)session.getAttribute("user");
-		if(u==null) {
+
+	private void viewShareVideo(HttpSession session, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		User u = (User) session.getAttribute("user");
+		if (u == null) {
 			response.sendRedirect("/Assignment/login");
-		}else {
+		} else {
 			linkVideo = request.getParameter("link");
 			request.setAttribute("view", "/views/shareVideo.jsp");
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		}
 	}
-	private void shareVideo(HttpSession session,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		User u = (User)session.getAttribute("user");
+
+	private void shareVideo(HttpSession session, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		User u = (User) session.getAttribute("user");
 		String sendmail = u.getEmail();
-		String title ="From:"+sendmail+""+"-send you video";
-		String about = "https://www.youtube.com/watch?v="+linkVideo;
+		String title = "From:" + sendmail + "" + "-send you video";
+		String about = "https://www.youtube.com/watch?v=" + linkVideo;
 		String reciveMail = request.getParameter("email");
 		atm.adminMail(request, response, reciveMail, title, about);
 		Video vd = vr.getVideoByUrl(linkVideo);
-		vr.setShare(vd.getView(),vd.getShare(), vd.getId());
-		int id = vd.getId();
-		this.hienthi(request, response); 
+		vr.setShare(vd.getView(), vd.getShare(), vd.getId());
+		/* hr.updateShare(u.getId(),vd.getId()); */
+		this.hienthi(request, response);
 	}
 
 }
