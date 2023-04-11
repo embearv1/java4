@@ -98,8 +98,10 @@ public class AdminController extends HttpServlet {
 		if(uri.contains("add-video")) {
 			this.addfilm(request, response);
 		}
-		if(uri.contains("update-video")) {
+		else if(uri.contains("update-video")) {
 			this.updateVideo(request, response);
+		}else {
+			this.viewAll(request, response);
 		}
 	}
 	private void viewAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -187,8 +189,7 @@ public class AdminController extends HttpServlet {
 		this.viewAll(request, response);
 	}
 	private void updateVideo (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+		Video vd_detail = vr.getOne(idvd);
 		Video vd = new Video();
 		String fileNameRandom = "default.png";
 		Part part = request.getPart("poster");
@@ -196,15 +197,28 @@ public class AdminController extends HttpServlet {
 		fileNameRandom = UUID.randomUUID() + ".png";
 
 		String uploadFile = "/upload/" + fileNameRandom;
-		
 		String uploadDirectory = getServletContext().getRealPath("/upload");
+		
+		System.out.println("Upload directory: " + uploadDirectory);
 		File uploadDir = new File(uploadDirectory);
+		
+		System.out.println("Upload directory is writable: " + uploadDir.canWrite());
 		if (!uploadDir.exists()) { // Kiểm tra nếu thư mục upload chưa tồn tại thì tạo nó
 		    uploadDir.mkdir();
 		}
 		String filePath = uploadDirectory + File.separator + fileNameRandom; // Đường dẫn tuyệt đối đến tệp được tải lên
-		part.write(filePath);
-		vd.setPoster(uploadFile);
+		
+		if(fileName==null || ("").equals(fileName)) {
+			vd.setPoster(vd_detail.getPoster());
+		}else {
+			try {
+			    part.write(filePath);
+			    vd.setPoster(uploadFile);
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+		}
+		
 		vd.setId(idvd);
 		String type_id =request.getParameter("type");
 		Type_Video type = tr.getOne(Integer.parseInt(type_id));
@@ -218,8 +232,7 @@ public class AdminController extends HttpServlet {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		} 
-		System.out.println(vd.getHref()+" "+vd.getDescrip());
+		}
 		vr.updateVideo(vd);
 		this.viewAll(request, response);
 	}

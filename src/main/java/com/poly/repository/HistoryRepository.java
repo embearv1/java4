@@ -85,7 +85,10 @@ public class HistoryRepository implements HistoryDAO {
 	public List<History> getHistoryByUser(int userId){
 		List<History> ds = new ArrayList<>();
 		try(Session session = HibernateConfig.getFACTORY().openSession()){
-			Query query = session.createQuery("From History where user.id=:userid order by viewDate desc");
+			String hql ="FROM History h WHERE h.viewDate IN (SELECT MAX(h2.viewDate)"
+					+ " FROM History h2 WHERE h2.user.id = :userid GROUP BY h2.video.id) ORDER BY h.viewDate DESC";
+			//String hql = "From History where user.id=:userid order by viewDate desc";
+			Query query = session.createQuery(hql);
 			query.setParameter("userid", userId);
 			ds = query.getResultList();
 		}
@@ -95,7 +98,9 @@ public class HistoryRepository implements HistoryDAO {
 	public List<Video> getLikedByUser(int userId){
 		List<Video> videos = new ArrayList<>();
 	    try (Session session = HibernateConfig.getFACTORY().openSession()) {
-	        Query query = session.createQuery("SELECT DISTINCT history.video FROM History history WHERE history.user.id = :userId AND history.islike = true AND history.video.active=true ORDER BY history.video.title DESC");
+	        Query query = session.createQuery("SELECT DISTINCT history.video FROM History history "
+	        		+ "WHERE history.user.id = :userId AND history.islike = true AND history.video.active=true "
+	        		+ "ORDER BY history.video.id DESC");
 	        query.setParameter("userId", userId);
 	        videos = query.getResultList();
 	    }
