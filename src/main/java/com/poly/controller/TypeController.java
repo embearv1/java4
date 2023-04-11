@@ -33,8 +33,7 @@ public class TypeController extends HttpServlet {
 		// TODO Auto-generated method stub
 		String uri = request.getRequestURI();
 		if(uri.contains("TypeController")) {
-			request.setAttribute("link","/views/admin/admin-type.jsp");
-			request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
+			this.hienThiType(request, response);
 		}
 		if(uri.contains("delete-type")) {
 			this.deleteType(request, response);
@@ -58,27 +57,32 @@ public class TypeController extends HttpServlet {
 			this.updateType(request, response);
 		}
 	}
+	private void hienThiType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("all_type", tr.getAll());
+		request.setAttribute("link","/views/admin/admin-type.jsp");
+		request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
+	}
 	private void addType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 		boolean active = true;
 		Type_Video type = new Type_Video(name, active);
 		tr.add(type);
+		request.setAttribute("alert", "Add Success!");
+		//this.hienThiType(request, response);
 		response.sendRedirect("/Assignment/admin/type");
 	}
 	
 	private void deleteType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		this.tr.dele(Integer.parseInt(id));
-		response.sendRedirect("/Assignment/admin/type");
+		response.sendRedirect("/Assignment/admin/type");;
 	}
 	
 	private void detailType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		Type_Video type = tr.getOne(Integer.parseInt(id));
 		request.setAttribute("type",type);
-		request.setAttribute("all_type", tr.getAll());
-		request.setAttribute("link","/views/admin/admin-type.jsp");
-		request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
+		this.hienThiType(request, response);
 	}
 
 	private void updateType(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

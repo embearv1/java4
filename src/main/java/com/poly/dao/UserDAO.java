@@ -23,5 +23,7 @@ public interface UserDAO {
 	User getOne(int id);
 
 	void updateUser(User u);
+	
+	void updateEmail(int id, String email);
 
 }

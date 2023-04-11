@@ -21,11 +21,12 @@ import com.poly.repository.UserRepository;
  * Servlet implementation class UserController
  */
 @WebServlet(urlPatterns = { "/view-login", "/view-signup", "/view-forget", "/login", "/sign-up", "/forget", "/logout",
-		"/my-profile" ,"/change-pass"})
+		"/my-profile", "/change-pass","/view-change-email" ,"/change-email"})
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserDAO ur = new UserRepository();
 	AuthenticationMail Au_mail = new AuthenticationMail();
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -53,8 +54,10 @@ public class UserController extends HttpServlet {
 			session.removeAttribute(SessionAtri.Current_User);
 			response.sendRedirect("login");
 		} else if (uri.contains("my-profile")) {
-			this.myProfile(session,request, response);
-		} 
+			this.myProfile(session, request, response);
+		}else if (uri.contains("view-change-email")) {
+			this.viewChangeEmail(session, request, response);
+		}  
 		else {
 			this.viewLogin(request, response);
 		}
@@ -72,14 +75,17 @@ public class UserController extends HttpServlet {
 		if (uri.contains("login")) {
 			this.login(session, request, response);
 		}
-		 if (uri.contains("change-pass")) {
+		if (uri.contains("change-pass")) {
 			this.Changepass(session, request, response);
-		} 
+		}
 		if (uri.contains("sign-up")) {
 			this.sign_up(request, response);
 		}
-		if(uri.contains("forget")) {
+		if (uri.contains("forget")) {
 			this.forgetPass(request, response);
+		}
+		if(uri.contains("change-email")) {
+			this.changeEmail(session, request, response);
 		}
 	}
 
@@ -106,15 +112,15 @@ public class UserController extends HttpServlet {
 		if (u != null) {
 			session.setAttribute(SessionAtri.Current_User, u);
 			Boolean isAdmin = u.isAdmin();
-			if(isAdmin==true){
+			if (isAdmin == true) {
 				response.sendRedirect("admin/home");
-			}else {
+			} else {
 				response.sendRedirect("all-video");
 			}
 		} else {
 			request.setAttribute("err", "Please check your input user or password");
 			request.getRequestDispatcher("/views/login.jsp").forward(request, response);
-			
+
 		}
 	}
 
@@ -133,17 +139,28 @@ public class UserController extends HttpServlet {
 			response.sendRedirect("login");
 		}
 	}
-	
-	public void myProfile(HttpSession session,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	public void myProfile(HttpSession session, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User u = (User) session.getAttribute(SessionAtri.Current_User);
 		request.setAttribute("user", u);
 		request.getRequestDispatcher("/views/myprofile.jsp").forward(request, response);
 	}
-	public void Changepass(HttpSession session,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	public void viewChangeEmail(HttpSession session, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		User u = (User) session.getAttribute(SessionAtri.Current_User);
+		request.setAttribute("email", u.getEmail());
+		request.getRequestDispatcher("/views/ChangeEmail.jsp").forward(request, response);
+	}
+
+	public void Changepass(HttpSession session, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User u = (User) session.getAttribute(SessionAtri.Current_User);
 		String pass = request.getParameter("pass");
 		String repass = request.getParameter("repass");
 		String oldpass = request.getParameter("oldpass");
+		if(pass!=null && repass!=null && oldpass!=null) {
 		if(!u.getPass().equals(oldpass)) {
 			session.setAttribute("err", "Please check your old password");
 			request.getRequestDispatcher("/views/myprofile.jsp").forward(request, response);
@@ -156,21 +173,30 @@ public class UserController extends HttpServlet {
 			this.myProfile(session, request, response);
 		}
 		}
-		
+		}
 	}
-	public void forgetPass(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	public void forgetPass(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String user = request.getParameter("user");
 		String emailTo = request.getParameter("email");
 		User u = ur.checkForget(user, emailTo);
-		if(u!=null) {
-			ur.resetPass(user);;
-			Au_mail.adminMail(request, response,emailTo,"Your New Password","123@");
+		if (u != null) {
+			ur.resetPass(user);
+			Au_mail.adminMail(request, response, emailTo, "Your New Password", "123@");
 			response.sendRedirect("login");
-		}else {
+		} else {
 			request.setAttribute("err", "Please Check your email or user name!");
 			request.getRequestDispatcher("/views/forget.jsp").forward(request, response);
 		}
 	}
-	
 
+	public void changeEmail(HttpSession session, HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		User u = (User) session.getAttribute(SessionAtri.Current_User);
+		String email = request.getParameter("email");
+		u.setEmail(email);
+		ur.updateEmail(u.getId(), email);
+		this.myProfile(session, request, response);
+	}
 }

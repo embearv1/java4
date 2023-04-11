@@ -129,4 +129,19 @@ public class UserRepository implements UserDAO  {
 			e.printStackTrace();
 		}
 	}
+	@Override
+	public void updateEmail(int id, String email) {
+		try (Session session = HibernateConfig.getFACTORY().openSession()){
+			Transaction tran = session.beginTransaction();
+			Query query = session.createQuery("Update User set email=:email where id=:id");
+			query.setParameter("id", id);
+			query.setParameter("email", email);
+			query.executeUpdate();
+			tran.commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+	}
 }

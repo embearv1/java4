@@ -231,7 +231,7 @@ public class VideoController extends HttpServlet {
 		Video vd = vr.getVideoByUrl(linkVideo);
 		vr.setShare(vd.getView(), vd.getShare(), vd.getId());
 		/* hr.updateShare(u.getId(),vd.getId()); */
-		this.hienthi(request, response);
+		response.sendRedirect("/Assignment/all-video");
 	}
 
 }

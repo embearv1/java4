@@ -17,7 +17,7 @@ public class Type_Repo implements TypeDAO {
 	public List<Type_Video> getAll() {
 		List<Type_Video> ds = new ArrayList<>();
 		try (Session session = HibernateConfig.getFACTORY().openSession()) {
-			Query query = session.createQuery("From Type_Video where isactive=true");
+			Query query = session.createQuery("From Type_Video where isactive=true order by id desc");
 			ds = query.getResultList();
 		} catch (Exception e) {
 			// TODO: handle exception

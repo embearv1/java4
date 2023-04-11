@@ -17,7 +17,7 @@ import com.poly.entity.User;
 /**
  * Servlet Filter implementation class Login_Role_Filter
  */
-@WebFilter("/admin/*")
+@WebFilter(urlPatterns = {"/admin/*","/TypeController","/AccountController"})
 public class Login_Role_Filter extends HttpFilter implements Filter {
        
     /**

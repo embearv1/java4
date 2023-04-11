@@ -227,6 +227,8 @@ public class AdminController extends HttpServlet {
 		vd.setListhis(null);
 		vd.setHref(request.getParameter("href"));
 		vd.setDescrip(request.getParameter("descrip"));
+		vd.setView(vd_detail.getView());
+		vd.setShare(vd_detail.getShare());
 		try {
 			BeanUtils.populate(vd,request.getParameterMap());
 		} catch (Exception e) {
