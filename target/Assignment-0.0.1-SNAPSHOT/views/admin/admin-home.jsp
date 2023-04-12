@@ -204,15 +204,11 @@
 	<!-- ============================================================== -->
 	<!-- This page plugins -->
 	<!-- ============================================================== -->
-	<script
-		src="<c:url value='/template/admin/plugins/chartist-js/dist/chartist.min.js'/>"></script>
-	<script
-		src="<c:url value='/template/admin/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js'/>"></script>
 	<!--c3 JavaScript -->
 	<script src="<c:url value='/template/admin/plugins/d3/d3.min.js'/>"></script>
 	<script
 		src="<c:url value='/template/admin/plugins/c3-master/c3.min.js'/>"></script>
-	<!-- Chart JS -->
+	<script src="<c:url value='/template/admin/js/alertAdmin.js'/>"></script>
 </body>
 
 </html>

@@ -29,7 +29,7 @@
 									class="icon_profile"></span>
 							</div>
 							<div class="input__item">
-								<input name="mail" type="email" placeholder="Email address" disabled="disabled" value="${user.email}"> <span
+								<input name="mail" type="email" placeholder="Email address" disabled="disabled"  value="${user.email}"> <span
 									class="icon_mail"></span>
 							</div>
 							<div class="input__item">
@@ -45,6 +45,7 @@
 									class="icon_lock"></span>
 							</div>
 							<button type="submit" class="site-btn">Change Password</button>
+							<a href="<c:url value='/view-change-email'/>" class="text-white">Change Your Email</a>
 						</form>
 						<h4 class="text-white">${err}</h4>
 					</div>
