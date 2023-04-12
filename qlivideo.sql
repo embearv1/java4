@@ -4,7 +4,7 @@ go
 use QLClip
 go
 
-create table [user](
+create table [account](
 id int primary key identity,
 username varchar(12) not null,
 password varchar(20) not null,
@@ -55,10 +55,14 @@ insert into video(title,id_type,href,poster,[description],active) values
 
 insert into type_video(name) values(N'Âm nhạc')
 
+insert into account(username,password,name,email,isAdmin) values('admin1','123','Nguyen Van Em','nguyenvanem05@gmail.com',1)
+
 select * from type_video
 select * from video 
-
+select * from account
 select * from history
+
+
 
 SELECT id_video
 FROM history

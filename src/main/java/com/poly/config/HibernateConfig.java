@@ -25,7 +25,7 @@ public class HibernateConfig {
 	        properties.put(Environment.DRIVER, "com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        properties.put(Environment.URL, "jdbc:sqlserver://localhost:1433;databaseName=QLClip");
 	        properties.put(Environment.USER, "sa");
-	        properties.put(Environment.PASS, "123456");
+	        properties.put(Environment.PASS, "12345");
 	        properties.put(Environment.SHOW_SQL, "true");
 
 	        conf.setProperties(properties);
