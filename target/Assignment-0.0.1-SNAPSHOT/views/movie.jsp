@@ -30,7 +30,6 @@
 				<c:forEach items="${video}" var="x">
 					<div class="col-lg-3 col-md-6 col-sm-6">
 						<div class="product__item">
-						<a href="<c:url value="video/detail?id=${x.id}"/>">
 							<div class="product__item__pic set-bg" data-setbg="<c:url value='${x.poster}'/>">
 								<div class="comment">
 									<i class="fa fa-comments"></i> 11
@@ -38,7 +37,6 @@
 								<div class="view">
 									<i class="fa fa-eye"></i>${x.view}</div>
 							</div>
-							</a>
 							<div class="product__item__text">
 								<ul>
 									<li>${x.type.name}</li>

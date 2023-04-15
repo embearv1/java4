@@ -100,7 +100,7 @@ public class HistoryRepository implements HistoryDAO {
 	    try (Session session = HibernateConfig.getFACTORY().openSession()) {
 	        Query query = session.createQuery("SELECT DISTINCT history.video FROM History history "
 	        		+ "WHERE history.user.id = :userId AND history.islike = true AND history.video.active=true "
-	        		+ "ORDER BY history.video.id DESC");
+	        		+ "ORDER BY history.video.title DESC");
 	        query.setParameter("userId", userId);
 	        videos = query.getResultList();
 	    }

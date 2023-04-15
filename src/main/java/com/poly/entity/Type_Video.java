@@ -23,7 +23,7 @@ public class Type_Video implements Serializable{
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="isActive")
+	@Column(name="isActive",insertable = true)
 	private boolean isactive;
 	
 	@OneToMany(mappedBy = "type",fetch = FetchType.LAZY)

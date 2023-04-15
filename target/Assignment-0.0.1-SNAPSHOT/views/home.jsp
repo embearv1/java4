@@ -76,7 +76,6 @@
                <c:forEach items="${_list}" var="x">
                		 <div class="col-lg-4 col-md-6 col-sm-6">
                   <div class="product__item">
-                    <a href="<c:url value='/video/detail?id=${x.id}'/>">
                     <div
                       class="product__item__pic set-bg"
                       data-setbg="<c:url value='${x.poster}'/>"
@@ -86,7 +85,6 @@
                       </div>
                       <div class="view"><i class="fa fa-eye"></i>${x.view}</div>
                     </div>
-                    </a>
                     <div class="product__item__text">
                       <ul>
                         <li>${x.type.name}</li>
@@ -114,7 +112,7 @@
                 <c:forEach items="${_ds}" var="c">
                 	<div
                     class="product__sidebar__view__item set-bg mix day years"
-                    data-setbg="<c:url value='${c.poster}'/>"
+                    data-setbg="<c:url value='${x.poster}'/>"
                   >
                     <div class="view"><i class="fa fa-eye"></i> ${c.view}</div>
                     <h5><a href="#">${c.title}</a></h5>
